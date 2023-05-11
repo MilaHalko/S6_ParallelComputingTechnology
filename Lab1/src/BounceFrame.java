@@ -2,24 +2,40 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 public class BounceFrame extends JFrame {
-    private BallCanvas canvas;
     public static final int WIDTH = 450;
     public static final int HEIGHT = 350;
+    private Canvas canvas;
+    private JLabel label;
+    private int ballsInHoles = 0;
 
     public BounceFrame() {
+        int lowPriorityBallsCount = 1000;
         this.setSize(WIDTH, HEIGHT);
         this.setTitle("Bounce programm");
-        this.canvas = new BallCanvas();
-        System.out.println("In Frame Thread name = "
-                + Thread.currentThread().getName());
+        this.canvas = new Canvas(this);
         Container content = this.getContentPane();
         content.add(this.canvas, BorderLayout.CENTER);
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Color.lightGray);
+        System.out.println("In Frame Thread name = "
+                + Thread.currentThread().getName());
+
         JButton buttonStart = new JButton("Start");
+        JButton buttonHolesSwitch = new JButton("2nd Task");
+        JButton buttonColorBalls = new JButton("3rd Task");
         JButton buttonStop = new JButton("Stop");
+
+        label = new JLabel();
+        setLabelBallsInHoles();
+
+        Hole h1 = new Hole(canvas, 300, 100, 20);
+        Hole h2 = new Hole(canvas, 200, 200, 20);
+        canvas.add(h1);
+        canvas.add(h2);
+
         buttonStart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -31,6 +47,38 @@ public class BounceFrame extends JFrame {
                         thread.getName());
             }
         });
+        buttonHolesSwitch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                canvas.switchHolesEnabled();
+                canvas.repaint();
+            }
+        });
+        buttonColorBalls.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int x = new Random().nextInt(canvas.getWidth());
+                int y = new Random().nextInt(canvas.getWidth());
+
+                Ball b = new Ball(canvas, x, y, Color.red);
+                canvas.add(b);
+                BallThread thread = new BallThread(b);
+                thread.setPriority(Thread.MAX_PRIORITY);
+                thread.start();
+                System.out.println("Thread name = " +
+                        thread.getName());
+
+                for (int i = 0; i < lowPriorityBallsCount; i++) {
+                    b = new Ball(canvas, x, y, Color.blue);
+                    canvas.add(b);
+                    thread = new BallThread(b);
+                    thread.setPriority(Thread.MIN_PRIORITY);
+                    thread.start();
+                    System.out.println("Thread name = " +
+                            thread.getName());
+                }
+            }
+        });
         buttonStop.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -38,7 +86,14 @@ public class BounceFrame extends JFrame {
             }
         });
         buttonPanel.add(buttonStart);
+        buttonPanel.add(buttonHolesSwitch);
+        buttonPanel.add(buttonColorBalls);
         buttonPanel.add(buttonStop);
+        buttonPanel.add(label);
         content.add(buttonPanel, BorderLayout.SOUTH);
+    }
+
+    public void setLabelBallsInHoles() {
+        label.setText("Balls in holes: " + canvas.getBallsInHoles());
     }
 }
