@@ -14,7 +14,7 @@ public class BounceFrame extends JFrame {
     public BounceFrame() {
         int lowPriorityBallsCount = 1000;
         this.setSize(WIDTH, HEIGHT);
-        this.setTitle("Bounce programm");
+        this.setTitle("Bounce program");
         this.canvas = new Canvas(this);
         Container content = this.getContentPane();
         content.add(this.canvas, BorderLayout.CENTER);
@@ -24,8 +24,9 @@ public class BounceFrame extends JFrame {
                 + Thread.currentThread().getName());
 
         JButton buttonStart = new JButton("Start");
-        JButton buttonHolesSwitch = new JButton("2nd Task");
-        JButton buttonColorBalls = new JButton("3rd Task");
+        JButton buttonHolesSwitch = new JButton("Holes");
+        JButton buttonColorBalls = new JButton("Priority");
+        JButton buttonJoin = new JButton("Join");
         JButton buttonStop = new JButton("Stop");
 
         label = new JLabel();
@@ -65,8 +66,6 @@ public class BounceFrame extends JFrame {
                 BallThread thread = new BallThread(b);
                 thread.setPriority(Thread.MAX_PRIORITY);
                 thread.start();
-                System.out.println("Thread name = " +
-                        thread.getName());
 
                 for (int i = 0; i < lowPriorityBallsCount; i++) {
                     b = new Ball(canvas, x, y, Color.blue);
@@ -74,9 +73,19 @@ public class BounceFrame extends JFrame {
                     thread = new BallThread(b);
                     thread.setPriority(Thread.MIN_PRIORITY);
                     thread.start();
-                    System.out.println("Thread name = " +
-                            thread.getName());
                 }
+            }
+        });
+
+        buttonJoin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Ball b1 = new Ball(canvas);
+                Ball b2 = new Ball(canvas);
+                canvas.add(b1);
+                canvas.add(b2);
+                BallThreadJoin joinThread = new BallThreadJoin (new BallThread(b1), new BallThread(b2));
+                joinThread.start();
             }
         });
         buttonStop.addActionListener(new ActionListener() {
@@ -85,9 +94,11 @@ public class BounceFrame extends JFrame {
                 System.exit(0);
             }
         });
+
         buttonPanel.add(buttonStart);
         buttonPanel.add(buttonHolesSwitch);
         buttonPanel.add(buttonColorBalls);
+        buttonPanel.add(buttonJoin);
         buttonPanel.add(buttonStop);
         buttonPanel.add(label);
         content.add(buttonPanel, BorderLayout.SOUTH);
