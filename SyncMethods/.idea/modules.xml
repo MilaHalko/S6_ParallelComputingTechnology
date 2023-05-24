@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/GradesJournal/GradesJournal.iml" filepath="$PROJECT_DIR$/GradesJournal/GradesJournal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Producer-Consumer/Producer-Consumer.iml" filepath="$PROJECT_DIR$/Producer-Consumer/Producer-Consumer.iml" />
       <module fileurl="file://$PROJECT_DIR$/SyncMethods.iml" filepath="$PROJECT_DIR$/SyncMethods.iml" />
     </modules>
   </component>

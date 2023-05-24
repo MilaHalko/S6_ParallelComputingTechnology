@@ -29,7 +29,7 @@ public class Bank {
         }
     }
 
-    public synchronized void syncTransfer(int from, int to, int amount) {
+    public synchronized void syncMethodTransfer(int from, int to, int amount) {
         transfer(from, to, amount);
     }
 
