@@ -1,5 +1,12 @@
+import Containers.*;
+import Multipliers.StandardMultiplier;
+import Multipliers.TapeMultiplier;
+
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
         int[][] dataA = {
                 {1, 2},
                 {3, 4}
@@ -13,27 +20,30 @@ public class Main {
         Matrix matrixA = new Matrix(1000, 1000);
         Matrix matrixB = new Matrix(1000, 1000);
 
+        Clock.start();
+        Result standardResult = StandardMultiplier.multiply(matrixA, matrixB);
+        Clock.stop("Standard");
 
-        long startTimeSeq = System.currentTimeMillis();
-        SequentialMultiplier sequentialMultiplier = new SequentialMultiplier(matrixA, matrixB);
-        sequentialMultiplier.multiply();
-        long endTimeSeq = System.currentTimeMillis();
-        System.out.println("Sequential: " + (endTimeSeq - startTimeSeq));
-
-        for (int i = 0; i < 10; i++) {
-            long startTime = System.currentTimeMillis();
-            TapeMultiplier tapeMultiplier = new TapeMultiplier(matrixA, matrixB, i + 1);
-            tapeMultiplier.multiply();
-            long endTime = System.currentTimeMillis();
-            System.out.println("Tape: " + (endTime - startTime));
+        for (int capacity = 1; capacity <= 10; capacity++) {
+            Clock.averageOn();
+            for (int i = 0; i < 10; i++) {
+                Clock.start();
+                Result tapeResult = TapeMultiplier.multiply(matrixA, matrixB, capacity);
+                Clock.stop();
+            }
+            Clock.averageOff("Tape " + capacity + " threads. ");
         }
-//        FoxMultiplier foxMultiplier = new FoxMultiplier(matrixA, matrixB);
 
-        Result sequentialResult = sequentialMultiplier.multiply();
-//        Result foxResult = foxMultiplier.multiply();
+        for (int capacity = 1; capacity <= 10; capacity++) {
+            Clock.averageOn();
+            for (int i = 0; i < 10; i++) {
+                Clock.start();
+//                Result foxResult = TapeMultiplier.multiply(matrixA, matrixB, capacity);
+                Clock.stop();
+            }
+            Clock.averageOff("Fox " + capacity + " threads. ");
+        }
 
-//        sequentialResult.print();
-//        tapeResult.print();
-//        foxResult.print();
+//        System.out.println(Matrix.compareMatrices(standardResult.getMatrix(), tapeResult.getMatrix()));
     }
 }

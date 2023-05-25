@@ -1,3 +1,6 @@
+package Multipliers;
+
+import Containers.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -9,10 +12,10 @@ public class FoxMultiplier {
     private final ExecutorService executor;
 
     public FoxMultiplier(Matrix matrixA, Matrix matrixB, int threads) {
-        this.matrixA = matrixA.makeCopy();
-        this.matrixB = matrixB.makeCopy();
-        this.result = new Result(matrixA.getRows(), matrixB.getColumns());
-        int size = (int) Math.sqrt((double) (matrixA.getRows() * matrixA.getRows()) / Runtime.getRuntime().availableProcessors());
+        this.matrixA = matrixA.getCopy();
+        this.matrixB = matrixB.getCopy();
+        this.result = new Result(matrixA.getRowsNumber(), matrixB.getColumnsNumber());
+        int size = (int) Math.sqrt((double) (matrixA.getRowsNumber() * matrixA.getRowsNumber()) / Runtime.getRuntime().availableProcessors());
         blockSize = size == 0 ? 1 : size;
         this.executor = Executors.newFixedThreadPool(threads);
     }
