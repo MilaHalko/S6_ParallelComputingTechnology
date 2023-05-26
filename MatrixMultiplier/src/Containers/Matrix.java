@@ -19,6 +19,7 @@ public class Matrix {
         this.columns = columns;
     }
 
+
     public int getValue(int i, int j) {
         return data[i][j];
     }

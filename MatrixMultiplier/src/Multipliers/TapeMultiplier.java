@@ -3,10 +3,7 @@ package Multipliers;
 import Containers.*;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 public class TapeMultiplier {
     public static Result multiply(Matrix matrixA, Matrix matrixB, int poolCapacity) throws ExecutionException, InterruptedException {
@@ -31,4 +28,22 @@ public class TapeMultiplier {
         }
         return new Result(resultMatrix);
     }
+
+    private static class TapeMultiplierTask implements Callable<Integer> {
+        private final int[] row;
+        private final int[] col;
+        public TapeMultiplierTask(int[] row, int[] col) {
+            this.row = row;
+            this.col = col;
+        }
+        @Override
+        public Integer call() throws Exception {
+            int sum = 0;
+            for (int i = 0; i < row.length; i++) {
+                sum += row[i] * col[i];
+            }
+            return sum;
+        }
+    }
+
 }
