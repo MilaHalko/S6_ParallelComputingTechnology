@@ -13,12 +13,11 @@ public class Matrix {
         this.columns = data[0].length;
     }
 
-    public Matrix(int rows, int columns) {
-        this.data = generateMatrix(rows, columns);
+    public Matrix(int rows, int columns, boolean generateRandom) {
+        this.data = generateRandom ? generateMatrix(rows, columns) : new int[rows][columns];
         this.rows = rows;
         this.columns = columns;
     }
-
 
     public int getValue(int i, int j) {
         return data[i][j];
@@ -36,16 +35,20 @@ public class Matrix {
         return columns;
     }
 
-    private int[][] generateMatrix(int rows, int columns) {
-        int[][] matrix = new int[rows][columns];
-        Random random = new Random();
+    public int[] getRow(int row) {
+        return data[row];
+    }
 
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                matrix[i][j] = random.nextInt(10);
-            }
+    public int[][] getArrayCopy() {
+        int[][] copy = new int[rows][columns];
+        for (int row = 0; row < rows; row++) {
+            System.arraycopy(data[row], 0, copy[row], 0, columns);
         }
-        return matrix;
+        return copy;
+    }
+
+    public Matrix getMatrixCopy() {
+        return new Matrix(getArrayCopy());
     }
 
     public void print() {
@@ -58,16 +61,6 @@ public class Matrix {
         System.out.println();
     }
 
-    public int[][] getCopy() {
-        int[][] copy = new int[rows][columns];
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < columns; col++) {
-                copy[row][col] = data[row][col];
-            }
-        }
-        return copy;
-    }
-
     public Matrix getTransposedMatrix() {
         int[][] transposed = new int[columns][rows];
         for (int row = 0; row < columns; row++) {
@@ -78,8 +71,12 @@ public class Matrix {
         return new Matrix(transposed);
     }
 
-    public int[] getRow(int row) {
-        return data[row];
+    public void addMatrix(Matrix matrix) {
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < columns; col++) {
+                data[row][col] += matrix.getValue(row, col);
+            }
+        }
     }
 
     public static boolean compareMatrices(Matrix m1, Matrix m2) {
@@ -94,5 +91,17 @@ public class Matrix {
             }
         }
         return true;
+    }
+
+    private int[][] generateMatrix(int rows, int columns) {
+        int[][] matrix = new int[rows][columns];
+        Random random = new Random();
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                matrix[i][j] = random.nextInt(10);
+            }
+        }
+        return matrix;
     }
 }

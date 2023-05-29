@@ -2,8 +2,24 @@ package Multipliers;
 
 import Containers.*;
 
-public class StandardMultiplier {
-    public static Result multiply(Matrix matrixA, Matrix matrixB) {
+public class StandardMultiplier implements IMatricesMultiplier {
+    @Override
+    public int getPoolCapacity() {
+        return 1;
+    }
+    @Override
+    public void setPoolCapacity(int capacity) {
+    }
+    @Override
+    public boolean isParallelAlgorithm() {return false;}
+
+    @Override
+    public String getName() {
+        return "Standard";
+    }
+
+    @Override
+    public Result multiply(Matrix matrixA, Matrix matrixB) {
         int rowsA = matrixA.getRowsNumber();
         int colsB = matrixB.getColumnsNumber();
         Result result = new Result(rowsA, colsB);
