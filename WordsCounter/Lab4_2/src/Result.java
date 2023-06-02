@@ -1,5 +1,3 @@
-package Containers;
-
 public class Result {
     private final Matrix matrix;
 

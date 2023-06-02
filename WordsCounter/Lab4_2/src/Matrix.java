@@ -1,5 +1,3 @@
-package Containers;
-
 import java.util.Random;
 
 public class Matrix {
@@ -17,6 +15,18 @@ public class Matrix {
         this.data = generateRandom ? generateMatrix(rows, columns) : new int[rows][columns];
         this.rows = rows;
         this.columns = columns;
+    }
+
+    public Matrix multiply(Matrix matrix2) {
+        int[][] result = new int[data.length][matrix2.getColumnsNumber()];
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < matrix2.getColumnsNumber(); j++) {
+                for (int k = 0; k < data[0].length; k++) {
+                    result[i][j] += data[i][k] * matrix2.getValue(k, j);
+                }
+            }
+        }
+        return new Matrix(result);
     }
 
     public int getValue(int i, int j) {

@@ -1,15 +1,7 @@
-import Containers.Matrix;
-import Containers.Result;
-
 import java.util.concurrent.ExecutionException;
 
 public interface IMatricesMultiplier {
     Result multiply(Matrix matrixA, Matrix matrixB) throws ExecutionException, InterruptedException;
-    int getPoolCapacity();
-    void setPoolCapacity(int capacity);
-    boolean isParallelAlgorithm();
-
-    String getName();
 
     static Matrix combineMatrices(Matrix[][] resultMatrices) {
         int splitSize = resultMatrices.length;
