@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.RecursiveTask;
 
-class SearchTask extends RecursiveTask<List<Integer>> {
+class WordsLengthsTask extends RecursiveTask<List<Integer>> {
     private final File file;
 
-    SearchTask(File file) {
+    WordsLengthsTask(File file) {
         this.file = file;
     }
 
@@ -24,7 +24,7 @@ class SearchTask extends RecursiveTask<List<Integer>> {
         List<RecursiveTask<List<Integer>>> tasks = new LinkedList<>();
 
         for (File entry : Objects.requireNonNull(file.listFiles())) {
-            SearchTask task = new SearchTask(entry);
+            WordsLengthsTask task = new WordsLengthsTask(entry);
             tasks.add(task);
             task.fork();
         }

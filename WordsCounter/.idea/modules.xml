@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ForkJoinPoolLab.iml" filepath="$PROJECT_DIR$/ForkJoinPoolLab.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Lab4_2/Lab4_2.iml" filepath="$PROJECT_DIR$/Lab4_2/Lab4_2.iml" />
     </modules>
   </component>
 </project>
