@@ -6,31 +6,30 @@ import java.util.Objects;
 
 public class Folder {
     private final List<Folder> subFolders;
-    private final List<Document> documents;
+    private final List<File> files;
 
-    public Folder(List<Folder> subFolders, List<Document> documents) {
+    public Folder(List<Folder> subFolders, List<File> documents) {
         this.subFolders = subFolders;
-        this.documents = documents;
+        this.files = documents;
     }
-    List<Document> getDocuments() {
-        return this.documents;
+    List<File> getFiles() {
+        return this.files;
     }
-
     List<Folder> getSubFolders() {
         return this.subFolders;
     }
 
     static Folder fromDirectory(File dir) throws IOException {
-        List<Document> documents = new LinkedList<>();
+        List<File> innerFiles = new LinkedList<>();
         List<Folder> subFolders = new LinkedList<>();
 
         for (File entry : Objects.requireNonNull(dir.listFiles())) {
             if (entry.isDirectory()) {
                 subFolders.add(Folder.fromDirectory(entry));
             } else {
-                documents.add(Document.fromFile(entry));
+                innerFiles.add(File.getFromFile(entry));
             }
         }
-        return new Folder(subFolders, documents);
+        return new Folder(subFolders, innerFiles);
     }
 }

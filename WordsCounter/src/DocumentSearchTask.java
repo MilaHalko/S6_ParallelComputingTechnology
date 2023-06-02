@@ -1,15 +1,17 @@
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.RecursiveTask;
 
 class DocumentSearchTask extends RecursiveTask<HashMap<Integer, Integer>> {
-    private final Document document;
+    private final File file;
 
-    DocumentSearchTask(Document document) {
-        this.document = document;
+    DocumentSearchTask(File file) {
+        this.file = file;
     }
 
     @Override
-    protected HashMap<Integer, Integer> compute() {
-        return WordCounter.occurrencesCount(document);
+    protected ArrayList<Integer> compute() {
+        return TextAnalizer(file);
     }
 }

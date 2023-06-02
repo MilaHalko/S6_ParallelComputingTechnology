@@ -1,3 +1,5 @@
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,17 +12,10 @@ class FolderSearchTask extends RecursiveTask<HashMap<Integer, Integer>> {
         this.folder = folder;
     }
 
-    HashMap<Integer, Integer> mergeMaps(HashMap<Integer,Integer> map1, HashMap<Integer,Integer> map2){
-        for (Integer key : map2.keySet()) {
-            map1.merge(key, map2.get(key), Integer::sum);
-        }
-        return map1;
-    }
-
     @Override
-    protected HashMap<Integer, Integer> compute() {
-        HashMap<Integer, Integer> countLengthsMap = new HashMap<>();
-        List<RecursiveTask<HashMap<Integer, Integer>>> tasks = new LinkedList<>();
+    protected ArrayList<Integer> compute() {
+        ArrayList<Integer> wordsLength = new ArrayList<>();
+        List<RecursiveTask<ArrayList<Integer>>> tasks = new LinkedList<>();
 
         for (Folder subFolder : folder.getSubFolders()) {
             FolderSearchTask task = new FolderSearchTask(subFolder);
@@ -28,15 +23,15 @@ class FolderSearchTask extends RecursiveTask<HashMap<Integer, Integer>> {
             task.fork();
         }
 
-        for (Document document : folder.getDocuments()) {
-            DocumentSearchTask task = new DocumentSearchTask(document);
+        for (File file : folder.getFiles()) {
+            DocumentSearchTask task = new DocumentSearchTask(file);
             tasks.add(task);
             task.fork();
         }
 
-        for (RecursiveTask<HashMap<Integer, Integer>> task : tasks) {
-            countLengthsMap = mergeMaps(countLengthsMap, task.join());
+        for (RecursiveTask<ArrayList<Integer>> task : tasks) {
+            wordsLength = mergeMaps(wordsLength, task.join());
         }
-        return countLengthsMap;
+        return wordsLength;
     }
 }

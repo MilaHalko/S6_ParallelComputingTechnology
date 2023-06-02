@@ -1,27 +1,27 @@
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        File file = new File("TestText\\IdenticalTexts");
+        File file = new File("Texts");
         Folder folder = Folder.fromDirectory(file);
-        WordCounter wordCounter = new WordCounter(2);
+        TextAnalizer textAnalizer = new TextAnalizer();
 
-        long startTime = System.currentTimeMillis();
-        HashMap<Integer, Integer> map = wordCounter.occurrencesCountParallel(folder);
-        long time = System.currentTimeMillis() - startTime;
+        ArrayList<Integer> wordsLength = textAnalizer.getWordsLengthParallel(folder);
+//        long startTime = System.currentTimeMillis();
+//        long time = System.currentTimeMillis() - startTime;
 
         double totalLength = 0;
         double count = 0;
-        for (var item:map.entrySet()){
+        for (var item: wordsLength.entrySet()){
             totalLength += (item.getValue() * item.getKey());
             count += item.getValue();
         }
         double meanLength = totalLength / count;
 
         totalLength = 0;
-        for (var item:map.entrySet()){
+        for (var item: wordsLength.entrySet()){
             totalLength += (Math.pow(item.getKey(),2) * item.getValue());
         }
         double D = (totalLength/count) - Math.pow(meanLength,2);
