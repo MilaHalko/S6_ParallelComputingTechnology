@@ -25,7 +25,7 @@ ____
   <img src="/images/lab5.png" width="500" align='left' />
   <img src="/images/lab6.png" width="400" align='left' />
   <img src="/images/lab7.png" width="500" align='left' />
-  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 ____
 
 ### Key Features
